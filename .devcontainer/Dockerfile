@@ -10,12 +10,19 @@ COPY . .
 # Set environment variables if needed
 ENV ENV_VAR_NAME=VALUE
 
-# Install any additional dependencies or tools required for your project
+# Install Gradle
 RUN apt-get update && \
-    apt upgrade -y
+    apt-get install -y wget unzip && \
+    wget -q https://services.gradle.org/distributions/gradle-7.2-bin.zip && \
+    unzip -q gradle-7.2-bin.zip -d /opt && \
+    rm gradle-7.2-bin.zip
 
-# Run any build or setup commands specific to your project
-RUN ./gradlew build
+# Set Gradle environment variables
+ENV GRADLE_HOME=/opt/gradle-7.2
+ENV PATH=$PATH:$GRADLE_HOME/bin
+
+# Run Gradle build
+RUN gradle build
 
 # Expose any necessary ports for your application
 EXPOSE 8080
