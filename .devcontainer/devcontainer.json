@@ -1,34 +1,22 @@
 {
-  "name": "My Dev Container",
+  "name": "IntelliJ IDEA Dev Container",
   "dockerFile": "Dockerfile",
+
   "extensions": [
     "dbaeumer.vscode-eslint",
     "ms-azuretools.vscode-docker",
     "ms-vscode-remote.remote-containers"
   ],
+
   "settings": {
     "terminal.integrated.shell.linux": "/bin/bash"
   },
-  "build": {
-    "dockerfile": "Dockerfile",
-    "args": {}
-  },
-  "runArgs": [],
-  "service": {
-    "app": {
-      "build": {
-        "dockerfile": "Dockerfile",
-        "args": {}
-      },
-      "command": [
-        "npm",
-        "start"
-      ],
-      "ports": [
-        "3000:3000"
-      ]
-    }
-  },
-  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
+
+  "forwardPorts": [8080],
+
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated"
+  ],
+
   "remoteUser": "vscode"
 }
