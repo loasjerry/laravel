@@ -12,7 +12,7 @@ ENV ENV_VAR_NAME=VALUE
 
 # Install any additional dependencies or tools required for your project
 RUN apt-get update && \
-    apt-get install -y <package-name>
+    apt upgrade -y
 
 # Run any build or setup commands specific to your project
 RUN ./gradlew build
