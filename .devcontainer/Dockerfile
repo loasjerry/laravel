@@ -2,8 +2,8 @@
 FROM php:8.2-fpm
 
 # Set the working directory inside the container
-WORKDIR /var/www/html/IdeaProjects/laravel
-
+WORKDIR /var/www/html
+RUN mkdir -p /var/www/html/IdeaProjects/laravel
 # Copy the project files into the container
 COPY . .
 
