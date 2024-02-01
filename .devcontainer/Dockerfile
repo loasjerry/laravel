@@ -1,31 +1,38 @@
-# Use a base image with Java and any other dependencies required for your project
-FROM adoptopenjdk:11-jdk-hotspot
+# Use a base image with PHP and Nginx
+FROM php:8.2-fpm
 
 # Set the working directory inside the container
-WORKDIR /workspace
+WORKDIR /var/www/html
 
 # Copy the project files into the container
 COPY . .
 
-# Set environment variables if needed
-ENV ENV_VAR_NAME=VALUE
-
-# Install Gradle
+# Install system dependencies
 RUN apt-get update && \
-    apt-get install -y wget unzip && \
-    wget -q https://services.gradle.org/distributions/gradle-7.2-bin.zip && \
-    unzip -q gradle-7.2-bin.zip -d /opt && \
-    rm gradle-7.2-bin.zip
+    apt-get install -y \
+        nginx \
+        libzip-dev \
+        zip \
+        unzip && \
+    docker-php-ext-install pdo_mysql zip
 
-# Set Gradle environment variables
-ENV GRADLE_HOME=/opt/gradle-7.2
-ENV PATH=$PATH:$GRADLE_HOME/bin
+# Configure Nginx
+COPY nginx.conf /etc/nginx/sites-available/default
+RUN ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
-# Run Gradle build
-RUN gradle build
+# Set the appropriate permissions
+RUN chown -R www-data:www-data /var/www/html && \
+    chmod -R 755 /var/www/html/storage && \
+    chmod -R 755 /var/www/html/bootstrap/cache
 
-# Expose any necessary ports for your application
-EXPOSE 8080
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Define the command to run your application
-CMD ["java", "-jar", "your-application.jar"]
+# Install project dependencies
+RUN composer install --optimize-autoloader --no-dev
+
+# Expose port 80 for Nginx
+EXPOSE 80
+
+# Define the command to start PHP-FPM and Nginx
+CMD service php8.2-fpm start && nginx -g "daemon off;"
