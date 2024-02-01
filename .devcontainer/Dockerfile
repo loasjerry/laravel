@@ -25,10 +25,10 @@ RUN apt-get update && \
 #    chmod -R 755 /var/www/html/bootstrap/cache
 
 # Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+#RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install project dependencies
-RUN composer install --optimize-autoloader --no-dev
+#RUN composer install --optimize-autoloader --no-dev
 
 # Expose port 80 for Nginx
 EXPOSE 80
