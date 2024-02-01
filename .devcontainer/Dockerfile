@@ -20,9 +20,9 @@ RUN apt-get update && \
 #RUN rm /etc/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Set the appropriate permissions
-RUN chown -R www-data:www-data /var/www/html && \
-    chmod -R 755 /var/www/html/storage && \
-    chmod -R 755 /var/www/html/bootstrap/cache
+#RUN chown -R www-data:www-data /var/www/html && \
+#    chmod -R 755 /var/www/html/storage && \
+#    chmod -R 755 /var/www/html/bootstrap/cache
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
