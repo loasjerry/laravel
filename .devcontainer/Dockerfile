@@ -16,9 +16,8 @@ RUN apt-get update && \
         unzip && \
     docker-php-ext-install pdo_mysql zip
 
-# Configure Nginx
-COPY nginx.conf /etc/nginx/sites-available/default
-RUN ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+# Remove the default Nginx configuration
+RUN rm /etc/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Set the appropriate permissions
 RUN chown -R www-data:www-data /var/www/html && \
